@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import styles from './App.module.css'
+import {Cards, CoinPicker} from './components'
+import {fetchData} from './api'
+
+class App extends React.Component {
+    // State to store the retrieve value
+    state = {
+        data: {},
+    }
+    
+    // Method to call the api
+    async componentDidMount() {
+        const fetchedData = await fetchData()
+        this.setState({data:fetchedData})
+    }
+
+    render() {
+        // Shorthand this.state
+        const {data} = this.state
+        
+        return (
+            <div className={styles.container}>
+                {/* Website title */}
+                <h1 className={styles.logo}> Koin </h1>
+                <h2 className={styles.headline}>Rupiah Conversion</h2>
+                
+                <CoinPicker/>
+
+                {/* Cards  */}
+                <Cards
+                data={data}
+                />
+
+
+            </div>
+        )
+    }
 }
 
-export default App;
+export default App
